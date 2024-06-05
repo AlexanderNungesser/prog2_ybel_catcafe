@@ -2,6 +2,7 @@ package catcafe;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
 import tree.Empty;
 import tree.Tree;
 import tree.TreeVisitor;
@@ -27,15 +28,15 @@ public class CatCafe {
         return null;
     }
 
-    public FelineOverLord getCatByWeight(int minWeight, int maxWeight) {
-        if (minWeight < 0) return null;
-        if (maxWeight < minWeight) return null;
+    public Optional<FelineOverLord> getCatByWeight(int minWeight, int maxWeight) {
+        if (minWeight < 0) throw new NullPointerException("The provided minWeight is less than 0");
+        if (maxWeight < minWeight)
+            throw new NullPointerException(
+                    "The provided minWeight is greater than the provided maxWeight");
 
-        for (FelineOverLord c : clowder) {
-            if (c.weight() >= minWeight && c.weight() < maxWeight) return c;
-        }
-
-        return null;
+        return clowder.stream()
+                .filter(c -> c.weight() >= minWeight && c.weight() < maxWeight)
+                .findFirst();
     }
 
     String accept(TreeVisitor<FelineOverLord> visitor) {
