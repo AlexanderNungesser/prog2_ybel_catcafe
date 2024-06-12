@@ -2,6 +2,7 @@ package catcafe;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
 import tree.Empty;
 import tree.Tree;
 import tree.TreeVisitor;
@@ -17,14 +18,12 @@ public class CatCafe {
         return clowder.size();
     }
 
-    public FelineOverLord getCatByName(String name) {
-        if (name == null) return null;
-
-        for (FelineOverLord c : clowder) {
-            if (c.name().equals(name)) return c;
+    public Optional<FelineOverLord> getCatByName(String name) {
+        if (name == null) {
+            throw new NullPointerException("The provided name is null");
         }
 
-        return null;
+        return clowder.stream().filter(c -> c.name().equals(name)).findFirst();
     }
 
     public FelineOverLord getCatByWeight(int minWeight, int maxWeight) {
